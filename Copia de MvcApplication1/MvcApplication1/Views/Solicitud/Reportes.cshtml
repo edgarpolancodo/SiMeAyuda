@@ -1,0 +1,125 @@
+﻿@using MvcApplication1.Models;
+@using System.Data.SqlClient;
+@{
+    SqlDataReader categorias = (SqlDataReader)ViewBag.categorias;
+    SqlDataReader estados = (SqlDataReader)ViewBag.estados;
+    SqlDataReader departamentos = (SqlDataReader)ViewBag.departamentos;
+    ViewBag.Title = "Reportes";
+}
+<script type="text/javascript">
+    var formulario;
+    var estado;
+    document.body.onload = function () {
+        formulario = document.getElementsByTagName("form")[0]; formulario.onsubmit = revisar;
+        $("#FechaDesde").datepicker({
+            inline: true
+        });
+        $("#FechaHasta").datepicker({
+            inline: true
+        });
+        $("#FechaModificacionDesde").datepicker({
+            inline: true
+        });
+        $("#FechaModificacionHasta").datepicker({
+            inline: true
+        });
+    }
+
+    function revisar() {
+        estado = true;
+        revisarFecha($('#FechaDesde'));
+        revisarFecha($('#FechaHasta'));
+        revisarFecha($('#FechaModificacionDesde'));
+        revisarFecha($('#FechaModificacionHasta'));
+        if (estado) {
+            return true;
+
+        } else {
+            alert("Debe ingresar las fechas en el formato correcto");
+            return false;
+        }
+    }
+    function revisarFecha(e) {
+        if (e.val() != "") {
+            if (!(e.val().split("/")[2] < 3000 && e.val().split("/")[0] < 13 && e.val().split("/")[0] > 0 && e.val().split("/")[1] > 0 && e.val().split("/")[1] < 32)) {
+                estado = false;
+            }
+        }
+    }
+</script>
+<h2>Reportes</h2>
+<table>
+@using (Html.BeginForm("Reportado", "Solicitud", FormMethod.Post))
+{
+<tr>
+<td>Formato a publicar</td><td><select name="Formato"><option value="PDF" selected>PDF</option><option value="Excel">Excel</option><option value="Word">Word</option></select></td>
+</tr>
+<tr>
+<td>Categoria</td><td><select name="Categoria"><option></option>
+@while (categorias.Read())
+{
+<option value="@categorias["ID"]">@categorias["Nombre"]</option>
+}
+</select></td>
+</tr>
+<tr>
+<td>Prioridad</td><td><select name="Prioridad"><option></option><option value="Alta">Alta</option><option value="Media">Media</option><option value="Baja">Baja</option></select></td>
+</tr>
+<tr>
+<td>Estado</td><td><select name="Estado"><option></option>
+@while (estados.Read())
+{
+<option value="@estados["ID"]">@estados["Nombre"]</option>
+}
+</select></td>
+</tr>
+<tr>
+<td>Departamento</td><td><select name="Departamento"><option></option>
+@while (departamentos.Read())
+{
+<option value="@departamentos["ID"]">@departamentos["Nombre"]</option>
+}
+</select></td>
+</tr>
+<tr>
+<td>Usuario creador</td><td><select name="UsuarioCreador"><option></option>
+@foreach (Usuarios solicitantes in (List<Usuarios>)ViewData["solicitantes"])
+    {
+        <option value=@solicitantes.NombreUsuario>@solicitantes.Nombre</option>
+    }
+</select>
+</td>
+</tr>
+<tr>
+<td>Usuario tecnico</td><td><select name="UsuarioTecnico"><option></option>
+@foreach (Usuarios tecnicos in (List<Usuarios>)ViewData["tecnicos"])
+    {
+        <option value=@tecnicos.NombreUsuario>@tecnicos.Nombre</option>
+    }
+</select></td>
+</tr>
+<tr>
+<td>Fecha de Creacion Desde MM/DD/AAAA</td><td><input type="text" name="FechaDesde" id="FechaDesde" maxlength="10" /></td>
+</tr>
+<tr>
+<td>Fecha de Creacion Hasta MM/DD/AAAA</td><td><input type="text" name="FechaHasta" id="FechaHasta" maxlength="10"/></td>
+</tr>
+<tr>
+<td>Fecha de Ultima Modificacion Desde MM/DD/AAAA</td><td><input type="text" name="FechaModificacionDesde" id="FechaModificacionDesde" maxlength="10"/></td>
+</tr>
+<tr>
+<td>Fecha de Ultima Modificacion Hasta MM/DD/AAAA</td><td><input type="text" name="FechaModificacionHasta" id="FechaModificacionHasta" maxlength="10"/></td>
+</tr>
+<tr>
+<td colspan="2"><input type="submit" value="Generar reporte" /></td>
+</tr>
+}
+</table>
+@{
+    categorias.Close();
+    estados.Close();
+    departamentos.Close();
+    categorias.Dispose();
+    estados.Dispose();
+    departamentos.Dispose();
+    }

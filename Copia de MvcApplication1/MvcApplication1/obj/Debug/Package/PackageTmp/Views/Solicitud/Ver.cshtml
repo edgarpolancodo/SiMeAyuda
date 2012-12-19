@@ -1,0 +1,94 @@
+﻿@using MvcApplication1.Models;
+@using System.Data.SqlClient;
+@{
+    ViewBag.Title = "Ver";
+    Solicitudes solicitud = (Solicitudes)ViewBag.Solicitud;
+    //SqlDataReader tecnicos = (SqlDataReader)ViewBag.Tecnicos;
+    SqlDataReader estados = (SqlDataReader)ViewBag.estados;
+    string alta="", media="", baja="";
+    if (solicitud.Prioridad == "Alta")
+    {
+        alta = "selected";
+    }else if(solicitud.Prioridad == "Media"){
+        media = "selected";
+    }else if(solicitud.Prioridad == "Baja"){
+        baja = "selected";
+    }
+    
+}
+
+<h2>Ver</h2>
+<p>@Html.ActionLink("Ver historia de esta solicitud","HistorialSolicitud/"+solicitud.ID,"Solicitud")</p>
+<p>@Html.ActionLink("Ver o agregar adjuntos","Adjuntos/"+solicitud.ID,"Solicitud")</p>
+@using (Html.BeginForm("Ver", "Solicitud", FormMethod.Post))
+{
+<table width="100%">
+        <tr>
+        <td>Fecha de creacion</td><td>@solicitud.FechaCreacion</td>
+        </tr>
+        <tr>
+        <td>Ultima modificacion</td><td>@solicitud.UltimaModificacion</td>
+        </tr>
+        <tr>
+        <td>Creado por: </td><td>@solicitud.UsuarioCreador.Nombre</td>
+        </tr>
+        <tr>
+        <td>Asignado a: </td><td>@solicitud.UsuarioTecnico.Nombre</td>
+        </tr>
+        <tr>
+        <td>Categoria</td><td>@solicitud.categoria.Nombre</td>
+        </tr>
+        
+        <tr>
+        <td>Prioridad</td>
+        <td>
+        <select name="Prioridad">
+        <option value="Alta" @alta>Alta</option><option value="Media" @media>Media</option><option value="Baja" @baja>Baja</option>
+        </select>
+        </td>
+        </tr>
+        <tr>
+        <td>Estado</td>
+        <td>
+        <select name="Estado">
+        <option value="@solicitud.estado.Nombre">@solicitud.estado.Nombre</option>
+        @while (estados.Read())
+        {
+            <option value=@estados["ID"]>@estados["Nombre"]</option>
+        }
+        </select>
+        </td>
+        </tr>
+        <tr>
+        <td>Descripcion de solicitud</td>
+        <td><textarea name="Descripcion">@solicitud.Descripcion</textarea></td>
+        </tr>
+        <tr>
+        <td>Solucion de la solicitud</td><td><textarea name="Solucion">@solicitud.Solucion</textarea></td>
+        </tr>
+        </table>
+<div>
+<input type="hidden" name="solicitudid" value=@solicitud.ID />
+<p><input type="submit" value="Guardar cambios" /></p>
+</div>
+}
+<div>
+<h4>Comentarios</h4>
+<table width="100%">
+@foreach (Comentarios item in ((List<Comentarios>)ViewData["comentarios"]))
+{
+<tr>
+<td>@item.usuario.Nombre</td><td>@item.tiempo</td>
+</tr>
+<tr>
+<td colspan="2">@item.Texto</td>
+</tr>
+}
+</table>
+@using (Html.BeginForm("Comentario","Solicitud",FormMethod.Post))
+{
+<input type="hidden" name="solicitudid" value=@solicitud.ID />
+<p><b>Agregar comentario</b></p>
+<textarea name="comentario"></textarea><input type="submit" value="Agregar"/>
+}
+</div>

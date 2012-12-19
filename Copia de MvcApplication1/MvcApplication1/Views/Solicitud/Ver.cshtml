@@ -1,0 +1,161 @@
+﻿@using MvcApplication1.Models;
+@using System.Data.SqlClient;
+@{
+    ViewBag.Title = "Ver";
+    Solicitudes solicitud = (Solicitudes)ViewBag.Solicitud;
+    //SqlDataReader tecnicos = (SqlDataReader)ViewBag.Tecnicos;
+    SqlDataReader estados = (SqlDataReader)ViewBag.estados;
+    string alta = "", media = "", baja = "";
+    if (solicitud.Prioridad == "Alta")
+    {
+        alta = "selected";
+    }else if(solicitud.Prioridad == "Media"){
+        media = "selected";
+    }else if(solicitud.Prioridad == "Baja"){
+        baja = "selected";
+    }
+    
+}
+<script type="text/javascript">
+    var formulario;
+    document.body.onload = function () { formulario = document.getElementsByTagName("form")[1]; formulario.onsubmit = revisar; if (document.getElementById("Estado").value != "5") { document.getElementById("Estado").onchange = validado_; } }
+    function revisar() {
+        if ($('#comentario').val() != "") {
+            return true;
+
+        } else {
+            alert("Debe escribir un texto para poder agregar el comentario");
+            return false;
+        }
+    }
+    function validado_() 
+    {
+        if ($('#Estado option:selected').text() == "Validado") {
+            document.getElementById("satisfaccion").style.display = 'block';
+        } else {
+            document.getElementById("satisfaccion").style.display = 'none';
+         }
+    }
+</script>
+<h2>Ver</h2>
+<p>@Html.ActionLink("Ver historia de esta solicitud","HistorialSolicitud/"+solicitud.ID,"Solicitud")</p>
+<p>@Html.ActionLink("Ver o agregar adjuntos","Adjuntos/"+solicitud.ID,"Solicitud")</p>
+@using (Html.BeginForm("Ver", "Solicitud", FormMethod.Post))
+{
+<table width="100%">
+        <tr>
+        <td>Fecha de creacion</td><td>@solicitud.FechaCreacion</td>
+        </tr>
+        <tr>
+        <td>Ultima modificacion</td><td>@solicitud.UltimaModificacion</td>
+        </tr>
+        <tr>
+        <td>Creado por: </td><td>@solicitud.UsuarioCreador.Nombre</td>
+        </tr>
+        <tr>
+        <td>Asignado a: </td>
+        @if (Session["rol"].ToString() == "Supervisor")
+        {
+        <td><select name="usuarioTecnico">
+        @foreach (Usuarios tecnicos in (List<Usuarios>)ViewData["tecnicos"])
+        {
+            if (tecnicos.ID == solicitud.UsuarioTecnico.ID)
+            {
+        <option value="@tecnicos.ID" selected>@tecnicos.Nombre</option>
+            }
+            else
+            {
+            <option value="@tecnicos.ID">@tecnicos.Nombre</option>
+            }
+        }
+        </select></td>
+        }
+        else
+        {
+        <td>@solicitud.UsuarioTecnico.Nombre</td>
+        }
+        </tr>
+        <tr>
+        <td>Categoria</td><td>@solicitud.categoria.Nombre</td>
+        </tr>
+        
+        <tr>
+        <td>Prioridad</td>
+        <td>
+        <select name="Prioridad">
+        <option value="Alta" @alta>Alta</option><option value="Media" @media>Media</option><option value="Baja" @baja>Baja</option>
+        </select>
+        </td>
+        </tr>
+        <tr>
+        <td>Estado</td>
+        <td>
+        <select name="Estado" id="Estado">
+        <option value="@solicitud.estado.ID">@solicitud.estado.Nombre</option>
+        @while (estados.Read())
+        {
+            <option value=@estados["ID"]>@estados["Nombre"]</option>
+        }
+        </select>
+        <div style="display:none" id="satisfaccion">
+        Favor indique su nivel de satisfaccion en el servicio
+        <p><input type="radio" name="satisfaccion" value="5" id="ms"checked/><label for="ms">Muy satisfecho</label></p>
+        <p><input type="radio" name="satisfaccion" value="4" id="s"/><label for="s">Satisfecho</label></p>
+        <p><input type="radio" name="satisfaccion" value="3" id="i"/><label for="i">Indiferente</label></p>
+        <p><input type="radio" name="satisfaccion" value="2" id="in"/><label for="in">Insatisfecho</label></p>
+        <p><input type="radio" name="satisfaccion" value="1" id="mi"/><label for="mi">Muy insatisfecho</label></p>
+        </div>
+        </td>
+        </tr>
+        <tr>
+        <td>Descripcion de solicitud</td>
+        <td><textarea name="Descripcion">@solicitud.Descripcion</textarea></td>
+        </tr>
+        <tr>
+        @if (Session["rol"].ToString() == "Supervisor" || Session["rol"].ToString() == "Tecnico")
+        {
+            <td>Solucion de la solicitud</td><td><textarea name="Solucion">@solicitud.Solucion</textarea></td>
+        }
+        else
+        {
+        <td>Solucion de la solicitud</td><td><textarea name="Solucion" readonly>@solicitud.Solucion</textarea></td>
+        }
+        </tr>
+        </table>
+<div>
+<input type="hidden" name="solicitudid" value=@solicitud.ID />
+@if (solicitud.estado.Nombre != "Cerrado")
+{
+<p><input type="submit" value="Guardar cambios"/></p>
+}
+else
+{
+<p><input type="submit" value="Guardar cambios" disabled="true"/></p>
+}
+</div>
+}
+<div>
+<h4>Comentarios</h4>
+<table width="100%">
+@foreach (Comentarios item in ((List<Comentarios>)ViewData["comentarios"]))
+{
+<tr>
+<td>@item.usuario.Nombre</td><td>@item.tiempo</td>
+</tr>
+<tr>
+<td colspan="2">@item.Texto</td>
+</tr>
+}
+</table>
+@using (Html.BeginForm("Comentario", "Solicitud", FormMethod.Post))
+{
+<input type="hidden" name="solicitudid" value=@solicitud.ID />
+<p><b>Agregar comentario</b></p>
+<textarea name="comentario" id="comentario"></textarea><input type="submit" value="Agregar"/>
+}
+</div>
+@{
+    estados.Close();
+    estados.Dispose();
+    
+    }

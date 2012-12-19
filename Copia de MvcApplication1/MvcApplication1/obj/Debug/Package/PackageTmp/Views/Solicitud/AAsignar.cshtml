@@ -1,0 +1,17 @@
+﻿@using MvcApplication1.Models
+@{
+    ViewBag.Title = "AAsignar";
+}
+
+<h2>Solicitudes sin asignar</h2>
+<table>
+<tr>
+<td>ID</td><td>Usuario creador</td><td>Fecha de creacion</td><td>Ultima Modificacion</td><td>Prioridad</td><td>Categoria</td><td>Accion</td>
+</tr>
+@foreach (Solicitudes sol in (List<Solicitudes>)ViewData["solicitudes"])
+{
+<tr>
+<td>@sol.ID.ToString()</td><td>@sol.UsuarioCreador.Nombre</td><td>@sol.FechaCreacion</td><td>@sol.UltimaModificacion</td><td>@sol.Prioridad</td><td>@sol.categoria.Nombre</td><td>@Html.ActionLink("Ver ", "Ver/" + sol.ID.ToString(), "Solicitud")@Html.ActionLink("Asignar", "Asignar/" + sol.ID.ToString(), "Solicitud")</td>
+</tr>    
+}
+</table>

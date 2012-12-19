@@ -1,0 +1,25 @@
+﻿@using MvcApplication1.Models
+@{
+    ViewBag.Title = "Adjuntos";
+}
+
+<h2>Adjuntos</h2>
+<table>
+<tr>
+<td>ID</td><td>Nombre de usuario</td><td>Fecha de subida</td>
+</tr>
+@foreach (Adjuntos adj in ((List<Adjuntos>)ViewData["adjuntos"]))
+{
+    <tr>
+    <td>@Html.ActionLink(adj.ID.ToString(), "../Content/archivos/" + adj.Archivo)</td><td>@adj.usuario.Nombre</td><td>@adj.fechatiempo</td>
+    </tr>
+}
+</table>
+@using (Html.BeginForm("AdjuntosSubidos", "Solicitud", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+<div>
+<input type=hidden name="solicitudid" value="@ViewBag.solicitudid"/>
+<input type=file name="Archivos" multiple="multiple"/>
+<input type=submit value="Subir" />
+</div>
+}

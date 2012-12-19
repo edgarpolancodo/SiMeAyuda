@@ -1,0 +1,43 @@
+﻿@using MvcApplication1.Models;
+@using System.Data.SqlClient;
+@{
+    ViewBag.Title = "Asignar";
+    Solicitudes solicitud = (Solicitudes)ViewBag.Solicitud;
+    
+}
+
+<h2>Asignar</h2>
+<table width="100%">
+        <tr>
+        <td>Fecha de creacion</td><td>@solicitud.FechaCreacion</td>
+        </tr>
+        <tr>
+        <td>Ultima modificacion</td><td>@solicitud.UltimaModificacion</td>
+        </tr>
+        <tr>
+        <td>Creado por: </td><td>@solicitud.UsuarioCreador.Nombre</td>
+        </tr>
+        <tr>
+        <td>Categoria</td><td>@solicitud.categoria.Nombre</td>
+        </tr>
+        
+        <tr>
+        <td>Prioridad</td><td>@solicitud.Prioridad</td>
+        </tr>
+        <tr>
+        <td>Descripcion de solicitud</td>
+        <td>@solicitud.Descripcion</td>
+        </tr>
+        </table>
+<div>
+@using (Html.BeginForm("Asignado", "Solicitud", FormMethod.Post))
+{
+<input type="hidden" name="solicitudid" value=@solicitud.ID />
+<p>Asignar a:<select name="tecnico">
+    @foreach (Usuarios tecnicos in (List<Usuarios>)ViewData["tecnicos"])
+    {
+        <option value=@tecnicos.ID>@tecnicos.Nombre</option>
+    }
+</select><input type=submit value="Asignar" /></p>
+}
+</div>

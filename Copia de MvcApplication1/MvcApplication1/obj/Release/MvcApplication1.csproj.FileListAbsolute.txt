@@ -1,0 +1,7 @@
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\Copia de MvcApplication1\MvcApplication1\bin\MvcApplication1.dll
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\Copia de MvcApplication1\MvcApplication1\bin\MvcApplication1.pdb
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\Copia de MvcApplication1\MvcApplication1\bin\EntityFramework.dll
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\Copia de MvcApplication1\MvcApplication1\bin\EntityFramework.xml
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\Copia de MvcApplication1\MvcApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\Copia de MvcApplication1\MvcApplication1\obj\Release\MvcApplication1.dll
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\Copia de MvcApplication1\MvcApplication1\obj\Release\MvcApplication1.pdb

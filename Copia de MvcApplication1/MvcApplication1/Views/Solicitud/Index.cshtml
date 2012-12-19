@@ -1,0 +1,54 @@
+﻿@model MvcApplication1.Models.Solicitudes
+@using MvcApplication1.Models
+
+@{
+    ViewBag.Title = "Creando solicitud";
+}
+
+<h2>Creando solicitud</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    var formulario;
+    document.body.onload = function () { formulario = document.getElementsByTagName("form")[0]; formulario.onsubmit = revisar;}
+    function revisar() {
+        if ($('#Descripcion').val() != "") {
+            return true;
+
+        } else {
+            alert("Debe ingresar informacion de su solicitud en la descripcion");
+            return false;
+         }
+     }
+</script>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Solicitudes</legend>
+        <table width="100%">
+        <tr>
+        <td>Prioridad</td><td><select name="Prioridad"><option value="Alta">Alta</option><option value="Media" selected>Media</option><option value="Baja">Baja</option></select></td>
+        </tr>
+        <tr>
+        <td>Categoria</td>
+        <td>
+        <select name="Categoria">
+        @foreach(Categorias categorias in (List<Categorias>)ViewData["categorias"])
+        {
+            <option value="@categorias.ID">@categorias.Nombre</option>
+        }
+        </select>
+        </td>
+        </tr>
+        <tr>
+        <td>Describa su solicitud</td>
+        <td>@Html.TextAreaFor(model => model.Descripcion)</td>
+        </tr>
+        </table>
+        <p>
+            <input type="submit" value="Crear" />
+        </p>
+    </fieldset>
+}
+

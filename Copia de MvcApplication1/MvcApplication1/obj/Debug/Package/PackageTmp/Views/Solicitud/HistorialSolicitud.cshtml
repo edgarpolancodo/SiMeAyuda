@@ -1,0 +1,40 @@
+﻿@using MvcApplication1.Models;
+@{
+    ViewBag.Title = "HistorialSolicitud";
+}
+
+<h2>HistorialSolicitud</h2>
+@foreach (Solicitudes sol in (List<Solicitudes>)ViewData["historia"])
+{
+<table width="100%">
+<tr>
+<td>Fecha</td><td>@sol.FechaCreacion</td>
+</tr>
+<tr>
+<td>Usuario</td><td>@sol.UsuarioCreador.Nombre</td>
+</tr>
+@if(sol.estado.Nombre != ""){
+<tr>
+<td>Estado</td><td>@sol.estado.Nombre</td>
+</tr>
+}
+@if (sol.Descripcion != "")
+{
+<tr>
+<td>Descripcion</td><td>@sol.Descripcion</td>
+</tr>
+}
+@if (sol.Solucion != "")
+{
+<tr>
+<td>Solucion</td><td>@sol.Solucion</td>
+</tr>
+}
+@if (sol.Prioridad != "")
+{
+<tr>
+<td>Prioridad</td><td>@sol.Prioridad</td>
+</tr>
+}
+</table>
+}

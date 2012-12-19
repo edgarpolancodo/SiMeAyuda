@@ -1,0 +1,43 @@
+﻿@model MvcApplication1.Models.Solicitudes
+@using System.Data.SqlClient;
+
+@{
+    ViewBag.Title = "Creando solicitud";
+    SqlDataReader categorias = (SqlDataReader)ViewBag.categorias;
+}
+
+<h2>Creando solicitud</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Solicitudes</legend>
+        <table>
+        <tr>
+        <td>Prioridad</td><td><select name="Prioridad"><option value="Alta">Alta</option><option value="Media" selected>Media</option><option value="Baja">Baja</option></select></td>
+        </tr>
+        <tr>
+        <td>Categoria</td>
+        <td>
+        <select name="Categoria">
+        @while (categorias.Read())
+        {
+            <option value="@categorias[0].ToString()">@categorias[1].ToString()</option>
+        }
+        </select>
+        </td>
+        </tr>
+        <tr>
+        <td>Describa su solicitud</td>
+        <td>@Html.TextAreaFor(model => model.Descripcion)</td>
+        </tr>
+        </table>
+        <p>
+            <input type="submit" value="Crear" />
+        </p>
+    </fieldset>
+}
+

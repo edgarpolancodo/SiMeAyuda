@@ -1,0 +1,76 @@
+﻿@using MvcApplication1.Models;
+@using System.Data.SqlClient;
+@{
+    SqlDataReader categorias = (SqlDataReader)ViewBag.categorias;
+    SqlDataReader estados = (SqlDataReader)ViewBag.estados;
+    SqlDataReader departamentos = (SqlDataReader)ViewBag.departamentos;
+    SqlDataReader tecnicos = (SqlDataReader)ViewBag.tecnicos;
+    SqlDataReader solicitantes = (SqlDataReader)ViewBag.solicitantes;
+    ViewBag.Title = "Consultar";
+}
+
+<h2>Consultar</h2>
+<table>
+@using (Html.BeginForm("Consultado", "Solicitud", FormMethod.Post))
+{
+<tr>
+<td>Categoria</td><td><select name="Categoria"><option></option>
+@while (categorias.Read())
+{
+<option value="@categorias["ID"]">@categorias["Nombre"]</option>
+}
+</select></td>
+</tr>
+<tr>
+<td>Prioridad</td><td><select name="Prioridad"><option></option><option value="Alta">Alta</option><option value="Media">Media</option><option value="Baja">Baja</option></select></td>
+</tr>
+<tr>
+<td>Estado</td><td><select name="Estado"><option></option>
+@while (estados.Read())
+{
+<option value="@estados["ID"]">@estados["Nombre"]</option>
+}
+</select></td>
+</tr>
+<tr>
+<td>Departamento</td><td><select name="Departamento"><option></option>
+@while (departamentos.Read())
+{
+<option value="@departamentos["ID"]">@departamentos["Nombre"]</option>
+}
+</select></td>
+</tr>
+<tr>
+<td>Usuario creador</td><td><select name="UsuarioCreador"><option></option>
+@while (solicitantes.Read())
+{
+<option value="@solicitantes["NombreUsuario"]">@solicitantes["Nombre"]</option>
+}
+</select>
+</td>
+</tr>
+<tr>
+<td>Usuario tecnico</td><td><select name="UsuarioTecnico"><option></option>
+@while (tecnicos.Read())
+{
+<option value="@tecnicos["NombreUsuario"]">@tecnicos["Nombre"]</option>
+}
+</select></td>
+</tr>
+<tr>
+<td>Fecha de Creacion desde AAAA/MM/DD</td><td><input type="text" name="FechaDesde" /></td>
+</tr>
+<tr>
+<td>Fecha de Creacion hasta AAAA/MM/DD</td><td><input type="text" name="FechaHasta" /></td>
+</tr>
+<tr>
+<td>Fecha de ultima modificacion desde AAAA/MM/DD</td><td><input type="text" name="FechaModificacionDesde" /></td>
+</tr>
+<tr>
+<td>Fecha de ultima modificacion hasta AAAA/MM/DD</td><td><input type="text" name="FechaModificacionHasta" /></td>
+</tr>
+<tr>
+<td colspan="2"><input type="submit" value="Consultar" /></td>
+</tr>
+}
+</table>

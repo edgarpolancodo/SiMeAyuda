@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/smoothness/jquery-ui-1.9.2.custom.css")" rel="stylesheet" />
+	<script src="@Url.Content("~/Scripts/jquery-ui-1.9.2.custom.min.js")" type="text/javascript"></script>
+</head>
+<body>
+    <div class="page">
+        <div id="header">
+            <div id="title">
+                <h1>SiMeAyuda</h1>
+            </div>
+            <div id="logindisplay">
+                Bienvenid&#64; <strong>@Session["nombre"].ToString()</strong>!
+            </div>
+            <div id="menucontainer">
+                <ul id="menu">
+                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Crear solicitud", "Index", "Solicitud")</li>
+                    @if(Session["rol"].ToString() == "Tecnico")
+                    {
+                    <li>@Html.ActionLink("Asignadas a mi", "Asignadas", "Solicitud")</li>
+                    <li>@Html.ActionLink("Consultar", "Consultar", "Solicitud")</li>
+                    }
+                    else if (Session["rol"].ToString() == "Supervisor")
+                    {
+                    <li>@Html.ActionLink("Asignar", "ListaAsignar", "Solicitud")</li>
+                    <li>@Html.ActionLink("Consultar", "Consultar", "Solicitud")</li>
+                    <li>@Html.ActionLink("Reportes", "Reportes", "Solicitud")</li>
+                    }
+                    else if (Session["rol"].ToString() == "Solicitante")
+                    {
+                    <li>@Html.ActionLink("Creadas por mi", "CreadasPorMi", "Solicitud")</li>
+                    }
+                    <li>@Html.ActionLink("Contactos", "About", "Home")</li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            @RenderBody()
+        </div>
+        <div id="footer">
+        </div>
+    </div>
+</body>
+</html>

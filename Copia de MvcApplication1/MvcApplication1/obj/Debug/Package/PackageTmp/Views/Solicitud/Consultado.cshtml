@@ -1,0 +1,17 @@
+﻿@using MvcApplication1.Models;
+@{
+    ViewBag.Title = "Consultado";
+}
+
+<h2>Consultado</h2>
+<table>
+<tr>
+<td>ID</td><td>Usuario creador</td><td>Usuario asignado</td><td>Fecha de creacion</td><td>Ultima Modificacion</td><td>Prioridad</td><td>Categoria</td>
+</tr>
+@foreach (Solicitudes sol in (List<Solicitudes>)ViewData["solicitudesFiltradas"])
+{
+<tr>
+<td>@Html.ActionLink(sol.ID.ToString(), "Ver/" + sol.ID.ToString(), "Solicitud")</td><td>@sol.UsuarioCreador.Nombre</td><td>@sol.UsuarioTecnico.Nombre</td><td>@sol.FechaCreacion</td><td>@sol.UltimaModificacion</td><td>@sol.Prioridad</td><td>@sol.categoria.Nombre</td>
+</tr>    
+}
+</table>
