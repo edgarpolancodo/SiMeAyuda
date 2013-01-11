@@ -57,6 +57,10 @@
         @if (Session["rol"].ToString() == "Supervisor")
         {
         <td><select name="usuarioTecnico">
+        @if (solicitud.UsuarioTecnico.Nombre == null)
+        {
+        <option></option>
+        }
         @foreach (Usuarios tecnicos in (List<Usuarios>)ViewData["tecnicos"])
         {
             if (tecnicos.ID == solicitud.UsuarioTecnico.ID)

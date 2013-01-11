@@ -4,3 +4,9 @@ C:\Documents and Settings\epolanco\Configuración local\Datos de programa\Tempor
 C:\Documents and Settings\epolanco\Configuración local\Datos de programa\Temporary Projects\ConsoleApplication1\obj\x86\Release\ResolveAssemblyReference.cache
 C:\Documents and Settings\epolanco\Configuración local\Datos de programa\Temporary Projects\ConsoleApplication1\obj\x86\Release\ConsoleApplication1.exe
 C:\Documents and Settings\epolanco\Configuración local\Datos de programa\Temporary Projects\ConsoleApplication1\obj\x86\Release\ConsoleApplication1.pdb
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\ConsoleApplication1.exe.config
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\ConsoleApplication1.exe
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\ConsoleApplication1.pdb
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\ConsoleApplication1\ConsoleApplication1\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\ConsoleApplication1\ConsoleApplication1\obj\x86\Release\ConsoleApplication1.exe
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\ConsoleApplication1\ConsoleApplication1\obj\x86\Release\ConsoleApplication1.pdb

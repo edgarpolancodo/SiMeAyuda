@@ -10,17 +10,21 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            Conexion con = new Conexion(), con2 = new Conexion();
+            Conexion con = new Conexion(); Conexion con2 = new Conexion();
             SqlDataReader solicitudes = con.GetSolicitudesAbiertas();
-            SqlDataReader supervisores, supervisores2 = con2.GetAllUsuariosSupervisores();
+            SqlDataReader super = con2.GetAllUsuariosSupervisores();
+            List<String> supervisores = new List<string>();
+            while(super.Read()){
+                supervisores.Add(super["CorreoElectronico"].ToString());
+            }
+            con2.Close();
             while (solicitudes.Read()) 
             {
-                supervisores = supervisores2;
                 if (solicitudes["Nombre"].ToString() == "Validado")
                 {
-                    while (supervisores.Read())
+                    foreach (string sup in supervisores)
                     {
-                        new Mensajes().EnviarMensaje(supervisores["CorreoElectronico"].ToString(), "Solicitud pendiente para cerrar", String.Format("Esta pendiente para cerrar la solicitud {0}. Favor de proceder y cerrarla.", solicitudes["ID"].ToString()));
+                        new Mensajes().EnviarMensaje(sup.ToString(), "Solicitud pendiente para cerrar", String.Format("Esta pendiente para cerrar la solicitud {0}. Favor de proceder y cerrarla.", solicitudes["ID"].ToString()));
                     }
                 }
                 else if (solicitudes["Nombre"].ToString() == "Resuelto") 
@@ -37,9 +41,9 @@ namespace ConsoleApplication1
                 }
                 else if (solicitudes["Nombre"].ToString() == "Ingresado")
                 {
-                    while (supervisores.Read())
+                    foreach (string sup in supervisores)
                     {
-                        new Mensajes().EnviarMensaje(supervisores["CorreoElectronico"].ToString(), "Solicitud pendiente para asignar", String.Format("Esta pendiente para asignar a usuario tecnico la solicitud {0}. Favor de proceder y asignarlo a usuario tecnico.", solicitudes["ID"].ToString()));
+                        new Mensajes().EnviarMensaje(sup, "Solicitud pendiente para asignar", String.Format("Esta pendiente para asignar a usuario tecnico la solicitud {0}. Favor de proceder y asignarlo a usuario tecnico.", solicitudes["ID"].ToString()));
                     }
                 }
             }

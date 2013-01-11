@@ -25,11 +25,20 @@ namespace MvcApplication1.Controllers
 
                 dsFindUser.PropertiesToLoad.Add("sn"); // surname = last name
                 dsFindUser.PropertiesToLoad.Add("givenName"); // first name
+                dsFindUser.PropertiesToLoad.Add("mail"); // correo
                 dsFindUser.Filter = string.Format("(&(objectCategory=Person)(anr={0}))", nombreusuario);
                 SearchResult result = dsFindUser.FindOne();
                 ViewBag.Nombre = result.Properties["givenName"][0].ToString() + " " + result.Properties["sn"][0].ToString();
                 string departamento = result.Path.Split(',')[1].Remove(0, 3);
-                string correo = nombreusuario + correoinstitucional;
+                string correo = "";
+                if (result.Properties["mail"].Count != 0)
+                {
+                    correo = result.Properties["mail"][0].ToString();
+                }
+                else 
+                {
+                    correo = nombreusuario + correoinstitucional;
+                }
                 usuario.NuevoUsuario(nombreusuario, ViewBag.Nombre, departamento, correo);
                 string mensaje = "Bienvenido al Sistema de Mesa de Ayuda del Ministerio de Economia, Planificación y Desarrollo\n Por esta vía se le enviará notificaciones de sus solicitudes.";
                 new Mensajes().EnviarMensaje(correo, "Bienvenido al SiMeAyuda", mensaje);

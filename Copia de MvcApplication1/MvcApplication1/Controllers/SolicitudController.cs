@@ -188,7 +188,8 @@ namespace MvcApplication1.Controllers
                 {
                     SolucionFinal = Request["Solucion"].ToString();
                 }
-                if (solicitud.UsuarioTecnico.ID.ToString() != Request["usuarioTecnico"]) {
+                if (solicitud.UsuarioTecnico.ID.ToString() != Request["usuarioTecnico"] && Request["usuarioTecnico"] != "")
+                {
                     usuarioTecnico = Request["usuarioTecnico"];
                 }
                 Conexion con = new Conexion();
