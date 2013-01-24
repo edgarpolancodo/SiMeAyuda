@@ -50,7 +50,7 @@
         <td>Ultima modificacion</td><td>@solicitud.UltimaModificacion</td>
         </tr>
         <tr>
-        <td>Creado por: </td><td>@solicitud.UsuarioCreador.Nombre</td>
+        <td>Creado por: </td><td>@solicitud.UsuarioCreador.Nombre (@solicitud.UsuarioCreador.departamento.Nombre)</td>
         </tr>
         <tr>
         <td>Asignado a: </td>
@@ -80,7 +80,7 @@
         }
         </tr>
         <tr>
-        <td>Categoria</td><td>@solicitud.categoria.Nombre</td>
+        <td>Categoria</td><td>@solicitud.categoria.Nombre / @solicitud.subcategoria.Nombre</td>
         </tr>
         
         <tr>

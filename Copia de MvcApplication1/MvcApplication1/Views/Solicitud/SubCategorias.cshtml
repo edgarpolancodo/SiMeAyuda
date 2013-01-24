@@ -1,0 +1,10 @@
+﻿@using MvcApplication1.Models;
+@{
+    ViewBag.Title = "SubCategorias";
+    Layout = "~/Views/Shared/ViewUserControl1.cshtml";
+}
+
+@foreach (SubCategorias subcategorias in (List<SubCategorias>)ViewData["subcategorias"])
+{
+    <option value="@subcategorias.ID">@subcategorias.Nombre</option>
+}

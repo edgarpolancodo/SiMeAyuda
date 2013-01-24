@@ -82,6 +82,20 @@ namespace MvcApplication1.Models
             con.Close();
             return usuarios;
         }
+        public List<Usuarios> GetAllTecnicos(int solicitudid)
+        {
+            Conexion con = new Conexion();
+            List<Usuarios> usuarios = new List<Usuarios>();
+            SqlDataReader users = con.GetAllTecnicos(solicitudid);
+            while (users.Read())
+            {
+                Usuarios usuario = new Usuarios();
+                usuario.InicioSesion(users["NombreUsuario"].ToString());
+                usuarios.Add(usuario);
+            }
+            con.Close();
+            return usuarios;
+        }
         public List<Usuarios> GetAllUsuariosSolicitantes()
         {
             Conexion con = new Conexion();

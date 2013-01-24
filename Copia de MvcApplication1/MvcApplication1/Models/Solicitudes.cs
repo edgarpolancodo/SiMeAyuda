@@ -19,20 +19,24 @@ namespace MvcApplication1.Models
         public DateTime FechaCreacion { get; set; }
         public DateTime UltimaModificacion { get; set; }
         public Categorias categoria { get; set; }
+        public SubCategorias subcategoria { get; set; }
         public Estados estado { get; set; }
         public Solicitudes() 
         {
             categoria = new Categorias();
+            subcategoria = new SubCategorias();
             estado = new Estados();
         }
         public bool NuevaSolicitud() 
         {
             Conexion con = new Conexion();
-            SqlDataReader solicituddata = con.NuevaSolicitud(UsuarioCreador.NombreUsuario, Descripcion, categoria.ID, Prioridad);
+            SqlDataReader solicituddata = con.NuevaSolicitud(UsuarioCreador.NombreUsuario, Descripcion, categoria.ID, Prioridad, subcategoria.ID);
             solicituddata.Read();
             this.UsuarioCreador.InicioSesion(this.UsuarioCreador.NombreUsuario);
             this.categoria.ID = Convert.ToInt32(solicituddata["CategoriaID"]);
             this.categoria.Nombre = Convert.ToString(solicituddata["Categoria"]);
+            this.subcategoria.ID = Convert.ToInt32(solicituddata["SubCategoriaID"]);
+            this.subcategoria.Nombre = Convert.ToString(solicituddata["SubCategoria"]);
             this.estado.ID = Convert.ToInt32(solicituddata["EstadoID"]);
             this.estado.Nombre = Convert.ToString(solicituddata["Estado"]);
             this.ID = Convert.ToInt32(solicituddata["SolicitudID"]);
@@ -54,6 +58,8 @@ namespace MvcApplication1.Models
             this.UsuarioTecnico.InicioSesion(Convert.ToString(solicituddata["UsuarioTecnico"]));
             this.categoria.ID = Convert.ToInt32(solicituddata["CategoriaID"]);
             this.categoria.Nombre = Convert.ToString(solicituddata["Categoria"]);
+            this.subcategoria.ID = Convert.ToInt32(solicituddata["SubCategoriaID"]);
+            this.subcategoria.Nombre = Convert.ToString(solicituddata["SubCategoria"]);
             this.estado.ID = Convert.ToInt32(solicituddata["EstadoID"]);
             this.estado.Nombre = Convert.ToString(solicituddata["Estado"]);
             this.ID = Convert.ToInt32(solicituddata["SolicitudID"]);
@@ -179,6 +185,26 @@ namespace MvcApplication1.Models
             }
             con.Close();
             return cats;
+        }
+    }
+    public class SubCategorias 
+    {
+        public int ID { get; set; }
+        public string Nombre { get; set; }
+        public List<SubCategorias> GetSubCategoriasByCategoriaId(int id) 
+        {
+            Conexion con = new Conexion();
+            List<SubCategorias> subcats = new List<SubCategorias>();
+            SqlDataReader subcategorias = con.GetSubCategoriasByCategoriaId(id);
+            while (subcategorias.Read())
+            {
+                SubCategorias cat = new SubCategorias();
+                cat.ID = Convert.ToInt32(subcategorias["ID"]);
+                cat.Nombre = subcategorias["Nombre"].ToString();
+                subcats.Add(cat);
+            }
+            con.Close();
+            return subcats;
         }
     }
     public class Estados 

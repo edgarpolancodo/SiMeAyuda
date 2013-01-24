@@ -45,7 +45,7 @@ namespace MvcApplication1.Models
             
             return resultado;
         }
-        public SqlDataReader NuevaSolicitud(string usuario, string descripcion, int categoria, string prioridad) 
+        public SqlDataReader NuevaSolicitud(string usuario, string descripcion, int categoria, string prioridad, int subcategoria) 
         {
             
             SqlCommand comando = new SqlCommand();
@@ -56,6 +56,7 @@ namespace MvcApplication1.Models
             comando.Parameters.Add(new SqlParameter("@categoriaID", categoria));
             comando.Parameters.Add(new SqlParameter("@prioridad", prioridad));
             comando.Parameters.Add(new SqlParameter("@descripcion", descripcion));
+            comando.Parameters.Add(new SqlParameter("@subcategoriaID", subcategoria));
             SqlDataReader resultado = comando.ExecuteReader();
             
             return resultado;
@@ -83,6 +84,15 @@ namespace MvcApplication1.Models
             SqlDataReader resultado = comando.ExecuteReader();
             return resultado;
         }
+        public SqlDataReader GetSubCategoriasByCategoriaId(int id) 
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.CommandType = System.Data.CommandType.Text;
+            comando.Connection = conexion;
+            comando.CommandText = String.Format("select * from SubCategorias where CategoriaID='{0}'", id.ToString());
+            SqlDataReader resultado = comando.ExecuteReader();
+            return resultado;
+        }
         public SqlDataReader GetAllTecnicos() 
         {
             
@@ -90,6 +100,18 @@ namespace MvcApplication1.Models
             comando.CommandType = System.Data.CommandType.StoredProcedure;
             comando.Connection = conexion;
             comando.CommandText = "ProcGetAllTecnicos";
+            SqlDataReader resultado = comando.ExecuteReader();
+            return resultado;
+        }
+        //Esta funcion busca los tecnicos basados en la subcategoria de la solicitud
+        public SqlDataReader GetAllTecnicos(int solicitudid)
+        {
+
+            SqlCommand comando = new SqlCommand();
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+            comando.Connection = conexion;
+            comando.CommandText = "ProcGetAllTecnicosBySubCategoria";
+            comando.Parameters.Add(new SqlParameter("@solicitudID", solicitudid));
             SqlDataReader resultado = comando.ExecuteReader();
             return resultado;
         }

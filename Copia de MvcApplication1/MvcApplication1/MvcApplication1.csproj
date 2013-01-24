@@ -158,6 +158,8 @@
     <Content Include="Views\Solicitud\Adjuntos.cshtml" />
     <Content Include="Views\Solicitud\CreadasPorMi.cshtml" />
     <Content Include="Views\Solicitud\Reportes.cshtml" />
+    <Content Include="Views\Shared\ViewUserControl1.cshtml" />
+    <Content Include="Views\Solicitud\SubCategorias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
