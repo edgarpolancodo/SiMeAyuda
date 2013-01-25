@@ -256,9 +256,20 @@ namespace MvcApplication1.Controllers
                     }
                     else if (Request["Estado"] == "8")
                     {
-                        //Enviar mensaje a usuario supervisor
+                        //Enviar mensaje a usuaris supervisores
+                        Conexion con2 = new Conexion();
+                        SqlDataReader super = con2.GetAllUsuariosSupervisores();
+                        List<String> supervisores = new List<string>();
+                        while (super.Read())
+                        {
+                            supervisores.Add(super["CorreoElectronico"].ToString());
+                        }
+                        con2.Close();
                         string mensaje = String.Format("Se ha registrado la solicitud {0} como No Valida por el usuario solicitante. Favor de resolver situación.", solicitud.ID);
-                        new Mensajes().EnviarMensaje(solicitud.UsuarioCreador.CorreoElectronico, "Solicitud marcada como No Valida", mensaje);
+                        foreach (string sup in supervisores)
+                        {
+                            new Mensajes().EnviarMensaje(sup.ToString(), "Solicitud marcada como No Valida", mensaje);
+                        }
                     }
                 }
                 return RedirectToAction("Ver", "Solicitud", solicitud.ID.ToString());
