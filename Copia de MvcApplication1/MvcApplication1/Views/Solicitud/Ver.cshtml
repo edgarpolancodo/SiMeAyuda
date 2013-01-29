@@ -113,16 +113,16 @@
         </tr>
         <tr>
         <td>Descripcion de solicitud</td>
-        <td><textarea name="Descripcion">@solicitud.Descripcion</textarea></td>
+        <td><textarea name="Descripcion" cols="50">@solicitud.Descripcion</textarea></td>
         </tr>
         <tr>
         @if (Session["rol"].ToString() == "Supervisor" || Session["rol"].ToString() == "Tecnico")
         {
-            <td>Solucion de la solicitud</td><td><textarea name="Solucion">@solicitud.Solucion</textarea></td>
+            <td>Solucion de la solicitud</td><td><textarea cols="50" name="Solucion">@solicitud.Solucion</textarea></td>
         }
         else
         {
-        <td>Solucion de la solicitud</td><td><textarea name="Solucion" readonly>@solicitud.Solucion</textarea></td>
+        <td>Solucion de la solicitud</td><td><textarea cols="50" name="Solucion" readonly>@solicitud.Solucion</textarea></td>
         }
         </tr>
         </table>

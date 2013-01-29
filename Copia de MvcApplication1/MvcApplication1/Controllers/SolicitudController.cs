@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Data.SqlClient;
 using System.DirectoryServices;
 using MvcApplication1.Models;
+using System.Data;
 
 namespace MvcApplication1.Controllers
 {
@@ -54,6 +55,7 @@ namespace MvcApplication1.Controllers
                         dsFindUser.PropertiesToLoad.Add("sn"); // surname = last name
                         dsFindUser.PropertiesToLoad.Add("givenName"); // first name
                         dsFindUser.PropertiesToLoad.Add("mail"); // correo
+                        dsFindUser.PropertiesToLoad.Add("sAMAccountName"); // nombre de usuario
                         dsFindUser.Filter = string.Format("(&(objectCategory=Person)(anr={0}))", Request["solicitante"]);
                         SearchResult result = dsFindUser.FindOne();
                         if (result != null)
@@ -67,9 +69,9 @@ namespace MvcApplication1.Controllers
                             }
                             else
                             {
-                                correo = Request["solicitante"] + correoinstitucional;
+                                correo = result.Properties["sAMAccountName"][0].ToString() + correoinstitucional;
                             }
-                            usuario.NuevoUsuario(Request["solicitante"], nombre, departamento, correo);
+                            usuario.NuevoUsuario(result.Properties["sAMAccountName"][0].ToString(), nombre, departamento, correo);
                             model.UsuarioCreador = usuario;
                         }
                         else 
@@ -329,7 +331,7 @@ namespace MvcApplication1.Controllers
         {
             if (Session["nombreusuario"] != null)
             {
-                string categoria = null, prioridad = null, estado = null, departamento = null, creador = null, tecnico = null, fechaDesde = null, fechaHasta = null, fechaModificacionDesde = null, fechaModificacionHasta = null;
+                string categoria = null, prioridad = null, estado = null, departamento = null, creador = null, tecnico = null, fechaDesde = null, fechaHasta = null, fechaModificacionDesde = null, fechaModificacionHasta = null, pagina = null;
                 if (Request["Categoria"] != "")
                 {
                     categoria = Request["Categoria"];
@@ -370,8 +372,23 @@ namespace MvcApplication1.Controllers
                 {
                     fechaModificacionHasta = Request["FechaModificacionHasta"];
                 }
-                List<Solicitudes> solicitudesFiltradas = new Solicitudes().GetSolicitudesFiltradas(categoria, prioridad, estado, departamento, creador, tecnico, fechaDesde, fechaHasta, fechaModificacionDesde, fechaModificacionHasta);
+                if (Request["pagina"] != "" && Request["pagina"] != null)
+                {
+                    pagina = Request["pagina"];
+                }
+                else 
+                {
+                    pagina = "1";
+                }
+                Conexion con = new Conexion();
+                DataSet ds = con.Consulta(categoria, prioridad, estado, departamento, creador, tecnico, fechaDesde, fechaHasta, fechaModificacionDesde, fechaModificacionHasta, pagina);
+                DataTableReader paginas = ds.Tables[2].CreateDataReader();
+                paginas.Read();
+                List<Solicitudes> solicitudesFiltradas = new Solicitudes().GetSolicitudesFiltradas(ds.Tables[1].CreateDataReader());
                 ViewData["solicitudesFiltradas"] = solicitudesFiltradas;
+                ViewBag.paginas = paginas["Paginas"].ToString();
+                ViewBag.campos = Request;
+                con.Close();
             }
             else {
                 return RedirectToAction("Index", "Home");

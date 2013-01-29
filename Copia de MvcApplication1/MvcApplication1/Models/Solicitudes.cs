@@ -136,10 +136,9 @@ namespace MvcApplication1.Models
             con.Close();
             return solicitudes; 
         }
-        public List<Solicitudes> GetSolicitudesFiltradas(string categoria, string prioridad, string estado, string departamento, string creador, string tecnico, string fechadesde, string fechahasta, string fechaModificacionDesde, string fechaModificacionHasta)
+        public List<Solicitudes> GetSolicitudesFiltradas(DataTableReader data)
         {
             Conexion con = new Conexion();
-            DataTableReader data = con.Consulta(categoria, prioridad, estado, departamento, creador, tecnico, fechadesde, fechahasta, fechaModificacionDesde, fechaModificacionHasta);
             List<Solicitudes> solicitudes = new List<Solicitudes>();
             while (data.Read())
             {

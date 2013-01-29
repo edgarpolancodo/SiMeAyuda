@@ -286,7 +286,7 @@ namespace MvcApplication1.Models
             
             return resultado;
         }
-        public DataTableReader Consulta(string categoria, string prioridad, string estado, string departamento, string creador, string tecnico, string fechadesde, string fechahasta, string fechaModificacionDesde, string fechaModificacionHasta) 
+        public DataSet Consulta(string categoria, string prioridad, string estado, string departamento, string creador, string tecnico, string fechadesde, string fechahasta, string fechaModificacionDesde, string fechaModificacionHasta, string pagina) 
         {
             
             SqlCommand comando = new SqlCommand();
@@ -303,11 +303,12 @@ namespace MvcApplication1.Models
             comando.Parameters.Add(new SqlParameter("@fechaHasta", fechahasta));
             comando.Parameters.Add(new SqlParameter("@fechaModificacionDesde", fechaModificacionDesde));
             comando.Parameters.Add(new SqlParameter("@fechaModificacionHasta", fechaModificacionHasta));
+            comando.Parameters.Add(new SqlParameter("@pagina", pagina));
             SqlDataAdapter a = new SqlDataAdapter(comando);
             DataSet ds = new DataSet();
             a.Fill(ds);
             
-            return ds.Tables[1].CreateDataReader();
+            return ds;
         }
         public SqlDataReader GetAdjuntosBySolicitud(int solicitud)
         {

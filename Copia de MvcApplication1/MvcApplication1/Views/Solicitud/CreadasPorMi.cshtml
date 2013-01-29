@@ -5,13 +5,13 @@
 
 <h2>Creadas Por Mi</h2>
 <table width="100%">
-<tr>
-<td>ID</td><td>Usuario asignado</td><td>Fecha de creacion</td><td>Ultima Modificacion</td><td>Prioridad</td><td>Categoria</td>
+<tr style="background-color:#5c87b2; color:#FFFFFF; font-weight:bold" align='center'>
+<td>ID</td><td>Usuario asignado</td><td>Fecha de creacion</td><td>Ultima Modificacion</td><td>Prioridad</td><td>Categoria</td><td>Estado</td>
 </tr>
 @foreach (Solicitudes sol in (List<Solicitudes>)ViewData["solicitudesFiltradas"])
 {
 <tr>
-<td>@Html.ActionLink(sol.ID.ToString(), "Ver/" + sol.ID.ToString(), "Solicitud")</td><td>@sol.UsuarioTecnico.Nombre</td><td>@sol.FechaCreacion</td><td>@sol.UltimaModificacion</td><td>@sol.Prioridad</td><td>@sol.categoria.Nombre</td>
+<td>@Html.ActionLink(sol.ID.ToString(), "Ver/" + sol.ID.ToString(), "Solicitud")</td><td>@sol.UsuarioTecnico.Nombre</td><td>@sol.FechaCreacion</td><td>@sol.UltimaModificacion</td><td>@sol.Prioridad</td><td>@sol.categoria.Nombre</td><td>@sol.estado.Nombre</td>
 </tr>    
 }
 </table>
