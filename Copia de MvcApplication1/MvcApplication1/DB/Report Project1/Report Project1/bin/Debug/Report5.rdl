@@ -596,7 +596,7 @@
                           </Paragraphs>
                           <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Top>3.03528cm</Top>
-                          <Left>5.84667cm</Left>
+                          <Left>6.61459cm</Left>
                           <Height>0.6cm</Height>
                           <Width>1.41521cm</Width>
                           <ZIndex>18</ZIndex>
@@ -611,7 +611,6 @@
                           </Style>
                         </Textbox>
                         <Textbox Name="Departamento">
-                          <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -628,7 +627,7 @@
                           <Top>3.03528cm</Top>
                           <Left>2.92333cm</Left>
                           <Height>0.6cm</Height>
-                          <Width>2.92334cm</Width>
+                          <Width>3.69126cm</Width>
                           <ZIndex>19</ZIndex>
                           <Style>
                             <Border>
@@ -656,9 +655,9 @@
                           </Paragraphs>
                           <rd:DefaultName>Estado</rd:DefaultName>
                           <Top>3.03528cm</Top>
-                          <Left>7.26188cm</Left>
+                          <Left>8.0298cm</Left>
                           <Height>0.6cm</Height>
-                          <Width>2.61938cm</Width>
+                          <Width>2.49526cm</Width>
                           <ZIndex>20</ZIndex>
                           <Style>
                             <Border>
@@ -688,7 +687,7 @@
                           </Paragraphs>
                           <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Top>3.03528cm</Top>
-                          <Left>9.88124cm</Left>
+                          <Left>10.52506cm</Left>
                           <Height>0.6cm</Height>
                           <Width>2.5cm</Width>
                           <ZIndex>21</ZIndex>
@@ -718,9 +717,9 @@
                           </Paragraphs>
                           <rd:DefaultName>Satisfaccion</rd:DefaultName>
                           <Top>3.03528cm</Top>
-                          <Left>12.38124cm</Left>
+                          <Left>13.02506cm</Left>
                           <Height>0.6cm</Height>
-                          <Width>4.12876cm</Width>
+                          <Width>3.48494cm</Width>
                           <ZIndex>22</ZIndex>
                           <Style>
                             <Border>

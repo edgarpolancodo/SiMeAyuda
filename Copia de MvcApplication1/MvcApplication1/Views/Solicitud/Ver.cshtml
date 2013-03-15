@@ -18,7 +18,18 @@
 }
 <script type="text/javascript">
     var formulario;
-    document.body.onload = function () { formulario = document.getElementsByTagName("form")[1]; formulario.onsubmit = revisar; if (document.getElementById("Estado").value != "5") { document.getElementById("Estado").onchange = validado_; } }
+    document.body.onload = function () {
+        formulario = document.getElementsByTagName("form")[1]; formulario.onsubmit = revisar; if (document.getElementById("Estado").value != "5") { document.getElementById("Estado").onchange = validado_; }
+        $('#Categoria').change(function () {
+            $.ajax({
+                url: "../../Solicitud/SubCategorias/" + $('#Categoria').val(),
+                cache: false
+            }).done(function (html) {
+                $("#SubCategoria").html(html);
+            });
+        })
+    }
+    
     function revisar() {
         if ($('#comentario').val() != "") {
             return true;
@@ -80,7 +91,42 @@
         }
         </tr>
         <tr>
-        <td>Categoria</td><td>@solicitud.categoria.Nombre / @solicitud.subcategoria.Nombre</td>
+        <td>Categoria</td>
+        @if (Session["rol"].ToString() != "Supervisor")
+        {
+        <td>@solicitud.categoria.Nombre / @solicitud.subcategoria.Nombre</td>
+        }
+        else 
+        {
+            <td><select name="categoria" id="Categoria">
+            @foreach(Categorias categorias in (List<Categorias>)ViewData["categorias"])
+            {
+                if (categorias.ID == solicitud.categoria.ID)
+                {
+                    <option value="@categorias.ID" selected>@categorias.Nombre</option>  
+                }
+                else 
+                {
+                    <option value="@categorias.ID">@categorias.Nombre</option>  
+                }
+            }
+            </select>
+            <select name="subcategoria" id="SubCategoria">
+            @foreach (SubCategorias subcategorias in (List<SubCategorias>)ViewData["subcategorias"])
+            {
+                if (subcategorias.ID == solicitud.subcategoria.ID)
+                {
+                    <option value="@subcategorias.ID" selected>@subcategorias.Nombre</option>
+                }
+                else 
+                {
+                    <option value="@subcategorias.ID">@subcategorias.Nombre</option>
+                }
+            }
+            </select>
+            </td>
+            
+        }
         </tr>
         
         <tr>

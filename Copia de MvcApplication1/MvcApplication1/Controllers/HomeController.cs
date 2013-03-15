@@ -18,17 +18,17 @@ namespace MvcApplication1.Controllers
             Usuarios usuario = new Usuarios();
             if (!usuario.InicioSesion(nombreusuario)) 
             {
-                DirectoryEntry deRoot = new DirectoryEntry("LDAP://SEEPYD.local:3268/dc=seepyd,dc=local","epolanco","Inicio02");
-
+                DirectoryEntry deRoot = new DirectoryEntry(System.Configuration.ConfigurationManager.AppSettings["ActiveDirectoryURL"], System.Configuration.ConfigurationManager.AppSettings["ActiveDirectoryUser"], System.Configuration.ConfigurationManager.AppSettings["ActiveDirectoryPassword"]);
+                        
                 DirectorySearcher dsFindUser = new DirectorySearcher(deRoot);
                 dsFindUser.SearchScope = SearchScope.Subtree;
 
-                dsFindUser.PropertiesToLoad.Add("sn"); // surname = last name
-                dsFindUser.PropertiesToLoad.Add("givenName"); // first name
+                dsFindUser.PropertiesToLoad.Add("cn"); // nombre completo
+                //dsFindUser.PropertiesToLoad.Add("givenName"); // first name
                 dsFindUser.PropertiesToLoad.Add("mail"); // correo
                 dsFindUser.Filter = string.Format("(&(objectCategory=Person)(anr={0}))", nombreusuario);
                 SearchResult result = dsFindUser.FindOne();
-                ViewBag.Nombre = result.Properties["givenName"][0].ToString() + " " + result.Properties["sn"][0].ToString();
+                ViewBag.Nombre = result.Properties["cn"][0].ToString();
                 string departamento = result.Path.Split(',')[1].Remove(0, 3);
                 string correo = "";
                 if (result.Properties["mail"].Count != 0)

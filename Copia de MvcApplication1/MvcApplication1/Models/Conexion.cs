@@ -192,7 +192,7 @@ namespace MvcApplication1.Models
             
             return resultado;
         }
-        public bool ModificarSolicitud(int solicitudid, string prioridad, string estado, string descripcion, string solucion, string usuario, string usuarioTecnico, string satisfaccion) {
+        public bool ModificarSolicitud(int solicitudid, string prioridad, string estado, string descripcion, string solucion, string usuario, string usuarioTecnico, string satisfaccion, string categoria, string subcategoria) {
             
             SqlCommand comando = new SqlCommand();
             comando.CommandType = System.Data.CommandType.StoredProcedure;
@@ -206,6 +206,8 @@ namespace MvcApplication1.Models
             comando.Parameters.Add(new SqlParameter("@usuario", usuario));
             comando.Parameters.Add(new SqlParameter("@usuarioAsignado", usuarioTecnico));
             comando.Parameters.Add(new SqlParameter("@satisfaccion", satisfaccion));
+            comando.Parameters.Add(new SqlParameter("@categoria", categoria));
+            comando.Parameters.Add(new SqlParameter("@subcategoria", subcategoria));
             comando.ExecuteNonQuery();
             
             return true;

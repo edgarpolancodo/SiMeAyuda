@@ -26,7 +26,14 @@ function IrPagina(pagina)
 <p align='center' style='font-weight: bold;'>
 @for (int i = 1; i <= int.Parse(ViewBag.paginas); i++) 
 {
-    <a href="javascript:IrPagina('@i')">@i</a>
+    if (i.ToString() != campos["pagina"])
+    {
+        <a href="javascript:IrPagina('@i')">@i</a>
+    }
+    else 
+    {
+        @i
+    }
 }
 </p>
 @using (Html.BeginForm("Consultado","Solicitud"))

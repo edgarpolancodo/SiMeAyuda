@@ -1,0 +1,17 @@
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\bin\Debug\notificador.exe.config
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\bin\Debug\notificador.exe
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\bin\Debug\notificador.pdb
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\obj\x86\Debug\notificador.exe
+C:\Documents and Settings\epolanco\mis documentos\visual studio 2010\Projects\notificador\notificador\obj\x86\Debug\notificador.pdb
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\notificador\notificador\bin\Debug\TryVisualStudioProfessional.ico
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\notificador\notificador\bin\Debug\notificador.exe.manifest
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\notificador\notificador\bin\Debug\notificador.application
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\notificador\notificador\obj\x86\Debug\notificador.exe.manifest
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\notificador\notificador\obj\x86\Debug\notificador.application
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\notificador\notificador\obj\x86\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Documents and Settings\epolanco\Mis documentos\Visual Studio 2010\Projects\notificador\notificador\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog

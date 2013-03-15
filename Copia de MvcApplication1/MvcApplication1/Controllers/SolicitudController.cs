@@ -49,18 +49,18 @@ namespace MvcApplication1.Controllers
                     if (!usuario.InicioSesion(Request["solicitante"]))
                     {
                         string correoinstitucional = System.Configuration.ConfigurationManager.AppSettings["CorreoInstitucional"];
-                        DirectoryEntry deRoot = new DirectoryEntry("LDAP://SEEPYD.local:3268/dc=seepyd,dc=local", "epolanco", "Inicio02");
+                        DirectoryEntry deRoot = new DirectoryEntry(System.Configuration.ConfigurationManager.AppSettings["ActiveDirectoryURL"], System.Configuration.ConfigurationManager.AppSettings["ActiveDirectoryUser"], System.Configuration.ConfigurationManager.AppSettings["ActiveDirectoryPassword"]);
                         DirectorySearcher dsFindUser = new DirectorySearcher(deRoot);
                         dsFindUser.SearchScope = SearchScope.Subtree;
-                        dsFindUser.PropertiesToLoad.Add("sn"); // surname = last name
-                        dsFindUser.PropertiesToLoad.Add("givenName"); // first name
+                        dsFindUser.PropertiesToLoad.Add("cn"); // nombre completo
+                        //dsFindUser.PropertiesToLoad.Add("givenName"); // first name
                         dsFindUser.PropertiesToLoad.Add("mail"); // correo
                         dsFindUser.PropertiesToLoad.Add("sAMAccountName"); // nombre de usuario
                         dsFindUser.Filter = string.Format("(&(objectCategory=Person)(anr={0}))", Request["solicitante"]);
                         SearchResult result = dsFindUser.FindOne();
                         if (result != null)
                         {
-                            string nombre = result.Properties["givenName"][0].ToString() + " " + result.Properties["sn"][0].ToString();
+                            string nombre = result.Properties["cn"][0].ToString();
                             string departamento = result.Path.Split(',')[1].Remove(0, 3);
                             string correo = "";
                             if (result.Properties["mail"].Count != 0)
@@ -96,7 +96,7 @@ namespace MvcApplication1.Controllers
                     ViewBag.SolicitudID = model.ID;
                     //Enviar mensaje a usuario solicitante
                     string mensaje = String.Format("Se ha registrado la creación de su solicitud {0}. En lo mas adelante se le estará asistiendo.", model.ID);
-                    new Mensajes().EnviarMensaje(Session["correousuario"].ToString(), "Solicitud registrada", mensaje);
+                    new Mensajes().EnviarMensaje(model.UsuarioCreador.CorreoElectronico, "Solicitud registrada", mensaje);
                     //Enviar mensaje a usuarios supervisores
                     List<Usuarios> supervisores = new Usuarios().GetAllUsuariosSupervisores();
                     foreach (Usuarios supervisor in supervisores) 
@@ -204,6 +204,10 @@ namespace MvcApplication1.Controllers
                 ViewBag.estados = new Conexion().GetEstadosByOrigen(solicitud.estado.ID, Session["nombreusuario"].ToString());
                 List<Comentarios> comentarios = new Comentarios().GetComentariosBySolicitudId(Convert.ToInt32(id));
                 ViewData["comentarios"] = comentarios;
+                List<Categorias> cat = new Categorias().GetAllCategorias();
+                ViewData["categorias"] = cat;
+                List<SubCategorias> subc = new SubCategorias().GetSubCategoriasByCategoriaId(solicitud.categoria.ID);
+                ViewData["subcategorias"] = subc;
                 if (Session["rol"].ToString() == "Supervisor")
                 {
                     ViewData["tecnicos"] = new Usuarios().GetAllTecnicos();
@@ -222,7 +226,7 @@ namespace MvcApplication1.Controllers
                 Solicitudes solicitud = new Solicitudes();
                 solicitud.ID = Convert.ToInt32(Request["solicitudid"]);
                 solicitud.CargarSolicitud();
-                string PrioridadFinal = null, DescripcionFinal = null, SolucionFinal = null, EstadoFinal = null, usuarioTecnico = null;
+                string PrioridadFinal = null, DescripcionFinal = null, SolucionFinal = null, EstadoFinal = null, usuarioTecnico = null, categoria = null, subcategoria = null;
                 bool estadocambiado = false;
                 if (solicitud.Prioridad != Request["Prioridad"])
                 {
@@ -245,8 +249,16 @@ namespace MvcApplication1.Controllers
                 {
                     usuarioTecnico = Request["usuarioTecnico"];
                 }
+                if (solicitud.categoria.ID.ToString() != Request["categoria"] && Request["categoria"] != null) 
+                {
+                    categoria = Request["categoria"];
+                }
+                if (solicitud.subcategoria.ID.ToString() != Request["subcategoria"] && Request["subcategoria"] != null)
+                {
+                    subcategoria = Request["subcategoria"];
+                }
                 Conexion con = new Conexion();
-                con.ModificarSolicitud(solicitud.ID, PrioridadFinal, EstadoFinal, DescripcionFinal, SolucionFinal, Session["nombreusuario"].ToString(), usuarioTecnico, Request["satisfaccion"]);
+                con.ModificarSolicitud(solicitud.ID, PrioridadFinal, EstadoFinal, DescripcionFinal, SolucionFinal, Session["nombreusuario"].ToString(), usuarioTecnico, Request["satisfaccion"], categoria, subcategoria);
                 con.Close();
                 if (estadocambiado) 
                 {
