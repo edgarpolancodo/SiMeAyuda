@@ -160,6 +160,8 @@
     <Content Include="Views\Solicitud\Reportes.cshtml" />
     <Content Include="Views\Shared\ViewUserControl1.cshtml" />
     <Content Include="Views\Solicitud\SubCategorias.cshtml" />
+    <Content Include="Views\Solicitud\Validado.cshtml" />
+    <Content Include="Views\Solicitud\NoValidado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -34,6 +34,11 @@ namespace MvcApplication1
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Solicitud", action = "Asignar", id = UrlParameter.Optional } // Parameter defaults
             );
+            routes.MapRoute(
+                "Default3", // Route name
+                "{controller}/{action}/{id}/{id2}", // URL with parameters
+                new { controller = "Solicitud", action = "Validar", id = UrlParameter.Optional, id2 = UrlParameter.Optional } // Parameter defaults
+            );
 
            
         }

@@ -23,6 +23,7 @@ namespace MvcApplication1.Controllers
                 
                 List<Categorias> cat = new Categorias().GetAllCategorias();
                 ViewData["categorias"] = cat;
+                ViewData["tecnicos"] = new Usuarios().GetAllTecnicos();
             }
             else 
             {
@@ -93,6 +94,12 @@ namespace MvcApplication1.Controllers
                 }
                 if (model.NuevaSolicitud())
                 {
+                    if (Request["tecnico"] != "") 
+                    {
+                        Usuarios tecnico = new Usuarios();
+                        tecnico.InicioSesion(Request["tecnico"]);
+                        model.Asignar(Session["nombreusuario"].ToString(), tecnico.ID);
+                    }
                     ViewBag.SolicitudID = model.ID;
                     //Enviar mensaje a usuario solicitante
                     string mensaje = String.Format("Se ha registrado la creación de su solicitud {0}. En lo mas adelante se le estará asistiendo.", model.ID);
@@ -265,12 +272,12 @@ namespace MvcApplication1.Controllers
                     if (Request["Estado"] == "4") 
                     {
                         //Enviar mensaje a usuario solicitante
-                        string mensaje = String.Format("Se ha registrado su solicitud {0} como resuelta. Favor dirigirse al sistema de mesa de ayuda y marcar el estado como validado o no validado. En caso de validado favor llenar el cuestionario de satisfaccion.", solicitud.ID);
+                        string mensaje = String.Format("Se ha registrado su solicitud <b>{0}</b> como <b>resuelta</b> con el asunto de {1}. En caso de que su solicitud haya sido resuelta favor especificar su nivel de satisfaccion haciendo click:<br/><a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/5'>Muy satisfecho</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/4'> Satisfecho</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/3'> Indiferente</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/2'> Insatisfecho</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/1'> Muy Insatisfecho</a><br />En caso de que su solicitud no se haya resuelto <a href='http://dtic017/MesaDeAyuda/Solicitud/NoValido/{0}'>click aqui</a><br />Nota: Para ingresar al sistema debe de estar dentro de la red alambrica de MEPYD. No podrá ingresar a traves de Wi-Fi", solicitud.ID, solicitud.Descripcion);
                         new Mensajes().EnviarMensaje(solicitud.UsuarioCreador.CorreoElectronico, "Solicitud marcada como resuelta", mensaje);
                     }
                     else if (Request["Estado"] == "8")
                     {
-                        //Enviar mensaje a usuaris supervisores
+                        //Enviar mensaje a usuarios supervisores
                         Conexion con2 = new Conexion();
                         SqlDataReader super = con2.GetAllUsuariosSupervisores();
                         List<String> supervisores = new List<string>();
@@ -610,6 +617,68 @@ namespace MvcApplication1.Controllers
             List<SubCategorias> subc = new SubCategorias().GetSubCategoriasByCategoriaId(Convert.ToInt32(id));
             ViewData["subcategorias"] = subc;
             return View();
+        }
+        public ActionResult Validado(string id, string id2) 
+        {
+            string nombreusuario = User.Identity.Name.Split('\\')[1].ToString();
+            Usuarios usuario = new Usuarios();
+            usuario.InicioSesion(nombreusuario);
+            Session["nombre"] = usuario.Nombre;
+            Session["nombreusuario"] = usuario.NombreUsuario;
+            Session["correousuario"] = usuario.CorreoElectronico;
+            Session["rol"] = usuario.rol.Nombre;
+            Solicitudes s = new Solicitudes();
+            s.ID = int.Parse(id);
+            s.CargarSolicitud();
+            if (s.estado.ID == 4)
+            {
+                Conexion con = new Conexion();
+                con.ModificarSolicitud(s.ID, null, "5", null, null, s.UsuarioCreador.NombreUsuario, null, id2, null, null);
+                con.Close();
+                return View();
+            }
+            else 
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+        public ActionResult NoValidado(string id)
+        {
+            string nombreusuario = User.Identity.Name.Split('\\')[1].ToString();
+            Usuarios usuario = new Usuarios();
+            usuario.InicioSesion(nombreusuario);
+            Session["nombre"] = usuario.Nombre;
+            Session["nombreusuario"] = usuario.NombreUsuario;
+            Session["correousuario"] = usuario.CorreoElectronico;
+            Session["rol"] = usuario.rol.Nombre;
+            Solicitudes s = new Solicitudes();
+            s.ID = int.Parse(id);
+            s.CargarSolicitud();
+            if (s.estado.ID == 4)
+            {
+                Conexion con = new Conexion();
+                con.ModificarSolicitud(s.ID, null, "8", null, null, s.UsuarioCreador.NombreUsuario, null, "5", null, null);
+                con.Close();
+                //Enviar mensaje a usuarios supervisores
+                Conexion con2 = new Conexion();
+                SqlDataReader super = con2.GetAllUsuariosSupervisores();
+                List<String> supervisores = new List<string>();
+                while (super.Read())
+                {
+                    supervisores.Add(super["CorreoElectronico"].ToString());
+                }
+                con2.Close();
+                string mensaje = String.Format("Se ha registrado la solicitud {0} como No Valida por el usuario solicitante. Favor de resolver situación.", s.ID);
+                foreach (string sup in supervisores)
+                {
+                    new Mensajes().EnviarMensaje(sup.ToString(), "Solicitud marcada como No Valida", mensaje);
+                }
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

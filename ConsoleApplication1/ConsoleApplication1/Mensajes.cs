@@ -22,7 +22,9 @@ namespace ConsoleApplication1
         {
             try
             {
-                smtpMail.Send(new System.Net.Mail.MailMessage(correoApp, destinatario, asunto, mensaje));
+                System.Net.Mail.MailMessage m = new System.Net.Mail.MailMessage(correoApp, destinatario, asunto, mensaje);
+                m.IsBodyHtml = true;
+                smtpMail.Send(m);
                 smtpMail.Dispose();
 
             }

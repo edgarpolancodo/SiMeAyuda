@@ -29,7 +29,7 @@ namespace ConsoleApplication1
                 }
                 else if (solicitudes["Nombre"].ToString() == "Resuelto") 
                 {
-                    new Mensajes().EnviarMensaje(solicitudes["CorreoElectronico"].ToString(), "Solicitud pendiente para validar", String.Format("Esta pendiente para validar la solicitud {0}. Favor de proceder y validarla. De paso especifique su nivel de satisfacción del servicio dado.", solicitudes["ID"].ToString()));
+                    new Mensajes().EnviarMensaje(solicitudes["CorreoElectronico"].ToString(), "Solicitud pendiente para validar", String.Format("Esta pendiente para validar la solicitud <b>{0}</b> con el asunto de {1}. En caso de que su solicitud haya sido resuelta favor especificar su nivel de satisfaccion haciendo click:<br/><a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/5'>Muy satisfecho</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/4'> Satisfecho</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/3'> Indiferente</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/2'> Insatisfecho</a>, <a href='http://dtic017/MesaDeAyuda/Solicitud/Validado/{0}/1'> Muy Insatisfecho</a><br />En caso de que su solicitud no se haya resuelto <a href='http://dtic017/MesaDeAyuda/Solicitud/NoValido/{0}'>click aqui</a><br />Nota: Para ingresar al sistema debe de estar dentro de la red alambrica de MEPYD. No podrá ingresar a traves de Wi-Fi", solicitudes["ID"].ToString(), solicitudes["Descripcion"].ToString()));
                 }
                 else if (solicitudes["Nombre"].ToString() == "En desarrollo")
                 {

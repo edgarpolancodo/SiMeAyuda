@@ -76,6 +76,21 @@
         <td>Describa su solicitud</td>
         <td>@Html.TextAreaFor(model => model.Descripcion, new { cols = "50"})</td>
         </tr>
+        @if (Session["rol"].ToString() == "Supervisor")
+        {
+        <tr>
+        <td>Asignar directamente a:</td>
+        <td>
+        <select name="tecnico" id="tecnico">
+            <option value=""></option>
+        @foreach(Usuarios tecnicos in (List<Usuarios>)ViewData["tecnicos"])
+        {
+            <option value="@tecnicos.NombreUsuario">@tecnicos.Nombre</option>
+        }
+        </select>
+        </td>
+        </tr>
+        }
         </table>
         <p>
             <input type="submit" value="Crear" />
